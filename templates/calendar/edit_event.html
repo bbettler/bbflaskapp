@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{# Erbt von der Basistemplate "base.html" #}
+
+{% block title %}Event bearbeiten{% endblock %}
+{# Überschreibt den "title"-Block, der im Browser-Tab angezeigt wird #}
+
+{% block content %}
+<div class="container">
+    {# Container für den Seiteninhalt #}
+    <h2 class="text-center my-4">Event bearbeiten</h2>
+    {# Überschrift der Seite, zentriert und mit vertikalem Margin #}
+
+    <form method="POST" class="bg-light p-4 rounded shadow-sm">
+        {# Formular zum Bearbeiten des Events; sendet Daten per POST; Styling: heller Hintergrund, Padding, abgerundete Ecken und Schatten #}
+        <div class="mb-3">
+            {# Container für das Titel-Feld mit unterem Margin #}
+            <label class="form-label" for="title">Titel:</label>
+            {# Beschriftung für das Titel-Eingabefeld #}
+            <input type="text" class="form-control" name="title" value="{{ event.title }}" required>
+            {# Eingabefeld für den Titel, vorbefüllt mit dem aktuellen Titel des Events #}
+        </div>
+
+        <div class="mb-3">
+            {# Container für die Beschreibung mit unterem Margin #}
+            <label class="form-label" for="description">Beschreibung:</label>
+            {# Beschriftung für das Textbereich-Feld der Beschreibung #}
+            <textarea class="form-control" name="description">{{ event.description }}</textarea>
+            {# Textbereich für die Eventbeschreibung, vorbefüllt mit dem aktuellen Text #}
+        </div>
+
+        <div class="mb-3">
+            {# Container für das Startzeit-Feld #}
+            <label class="form-label" for="start_time">Startzeit:</label>
+            {# Beschriftung für das Startzeit-Eingabefeld #}
+            <input type="datetime-local" class="form-control" name="start_time" value="{{ event.start_time.strftime('%Y-%m-%dT%H:%M') }}" required>
+            {# Eingabefeld für Startzeit im datetime-local Format, vorbefüllt mit der formatierten Startzeit des Events #}
+        </div>
+
+        <div class="mb-3">
+            {# Container für das Endzeit-Feld #}
+            <label class="form-label" for="end_time">Endzeit:</label>
+            {# Beschriftung für das Endzeit-Eingabefeld #}
+            <input type="datetime-local" class="form-control" name="end_time" value="{{ event.end_time.strftime('%Y-%m-%dT%H:%M') }}" required>
+            {# Eingabefeld für Endzeit im datetime-local Format, vorbefüllt mit der formatierten Endzeit des Events #}
+        </div>
+
+        <!-- Teilnehmer Auswahl -->
+        <div class="mb-3">
+            {# Container für die Auswahl der Teilnehmer mit unterem Margin #}
+            <label class="form-label">Teilnehmer:</label>
+            {# Beschriftung für die Teilnehmerauswahl #}
+            <div class="border p-2 rounded" style="max-height: 200px; overflow-y: auto;">
+                {# Container mit Rahmen, Padding, abgerundeten Ecken und Scrollfunktion für viele Teilnehmer #}
+                {% for user in all_users %}
+                    {# Iteriert über alle Nutzer, um eine Checkbox für jeden anzuzeigen #}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="participants" value="{{ user.id }}"
+                            {% if user in event.participants %}checked{% endif %}>
+                        {# Checkbox für den jeweiligen Nutzer; wird vorab aktiviert, falls der Nutzer bereits Teilnehmer des Events ist #}
+                        <label class="form-check-label">
+                            {{ user.username }} ({{ user.email }})
+                        </label>
+                        {# Anzeige des Benutzernamens und der E-Mail des Nutzers neben der Checkbox #}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Speichern</button>
+        {# Submit-Button zum Speichern der Änderungen, nimmt die gesamte Breite ein #}
+        <a href="{{ url_for('calendar.calendar_view') }}" class="btn btn-secondary w-100 mt-2">Abbrechen</a>
+        {# Link-Button zum Abbrechen und Zurückkehren zur Kalenderansicht, ebenfalls vollbreit und mit oberem Margin #}
+    </form>
+</div>
+{% endblock %}

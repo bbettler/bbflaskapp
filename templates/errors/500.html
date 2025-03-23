@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{# Erbt vom Basis-Template "base.html", das das Grundlayout der Seite enthält #}
+
+{% block title %}Interner Serverfehler{% endblock %}
+{# Überschreibt den "title"-Block und setzt den Seitentitel auf "Interner Serverfehler" #}
+
+{% block content %}
+<div class="container text-center">
+    {# Container, der den Inhalt der Fehlerseite zentriert darstellt #}
+    <h1 class="text-danger">500</h1>
+    {# Große Überschrift in roter Farbe, die den Fehlercode 500 anzeigt #}
+    <p>Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später erneut.</p>
+    {# Kurze Beschreibung, dass ein interner Fehler vorliegt und der Benutzer es später erneut versuchen soll #}
+    <a href="{{ url_for('calendar.calendar_view') }}" class="btn btn-primary">Zurück zur Startseite</a>
+    {# Button, der den Benutzer zur Startseite (Kalenderansicht) zurückführt #}
+</div>
+{% endblock %}

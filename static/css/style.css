@@ -1,0 +1,417 @@
+/* ========================== */
+/* 🌍 Allgemeine Einstellungen */
+/* ========================== */
+body {
+    /* Setzt die Schriftart und den Hintergrund, sowie Standardwerte für Margin und Padding */
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container */
+.container {
+    /* Definiert die maximale Breite, zentriert den Container und versieht ihn mit Padding, Hintergrund, abgerundeten Ecken und Schatten */
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Spezifische Navbar-Container-Styling */
+.navbar-container {
+    /* Nutzt die gesamte Breite und fügt optional horizontale Abstände hinzu; der Hintergrund ist transparent */
+    max-width: 100%;
+    padding: 0 20px;
+    background: transparent;
+}
+
+/* ========================== */
+/* 📌 Formulare */
+/* ========================== */
+form {
+    /* Formulare werden als Spalte dargestellt mit Lücken zwischen den Elementen; zentriert mit festgelegter maximaler Breite, Hintergrund, Padding, Eckenradius und Schatten */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 500px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    /* Beschriftungen werden linksbündig und fett dargestellt */
+    text-align: left;
+    font-weight: bold;
+}
+
+form input, form textarea {
+    /* Definiert Padding, Rahmen, Eckenradius, Schriftgröße und Breite für Eingabefelder und Textbereiche */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+}
+
+form button {
+    /* Gestaltet den Button mit Hintergrundfarbe, Textfarbe, Padding, ohne Rahmen, abgerundeten Ecken, Cursor-Pointer und zentrierter Ausrichtung */
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: fit-content;
+    align-self: center;
+}
+
+form button:hover {
+    /* Ändert die Hintergrundfarbe beim Hover über den Button */
+    background-color: #218838;
+}
+
+/* ========================== */
+/* 📌 Flash-Messages (Fehlermeldungen, Erfolge) */
+/* ========================== */
+.flash-messages {
+    /* Entfernt Standardlisten-Stile, fügt Padding, Margin, Breite, abgerundete Ecken und zentrierten Text hinzu */
+    list-style: none;
+    padding: 10px;
+    margin: 10px auto;
+    width: 80%;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.flash-messages .success {
+    /* Styling für Erfolgsmeldungen: Hintergrund, Textfarbe, Padding, Rahmen und abgerundete Ecken */
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+}
+
+.flash-messages .danger {
+    /* Styling für Fehlermeldungen: Hintergrund, Textfarbe, Padding, Rahmen und abgerundete Ecken */
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+}
+
+/* ========================== */
+/* 📌 Kalender-Styling */
+/* ========================== */
+.calendar-container {
+    /* Container für den Kalender mit maximaler Breite, zentriertem Layout und Padding */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+.calendar-container .header {
+    /* Styling für den Kalenderheader: Hintergrund, Padding, Textfarbe, Zentrierung, abgerundete Ecken und flexibles Layout */
+    background-color: #f8f9fa;
+    padding: 10px;
+    color: black;
+    text-align: center;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+}
+
+.calendar-container .header-button {
+    /* Buttons im Header mit spezifischer Hintergrundfarbe, Textfarbe, Padding, Margin, Cursor und abgerundeten Ecken */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.calendar-container .header-button:hover {
+    /* Hover-Effekt für Header-Buttons */
+    background-color: #0056b3;
+}
+
+/* Kalender-Grid */
+.calendar-grid {
+    /* Erstellt ein Grid mit 7 Spalten (eine pro Wochentag) und definiert Lücken und Padding */
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+}
+
+/* Wochentage */
+.weekday-header {
+    /* Kopfzeilen für Wochentage werden fett dargestellt, mit Hintergrund, Textfarbe, Padding, zentriertem Text und abgerundeten Ecken */
+    font-weight: bold;
+    background: #66686b;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+/* Tage */
+.day {
+    /* Einzelne Tage im Kalender mit Hintergrund, Rahmen, Padding, Mindesthöhe, linkem Text und relativer Positionierung */
+    background: #b1bdc5;
+    border: 1px solid #949494;
+    padding: 10px;
+    min-height: 120px;
+    text-align: left;
+    position: relative;
+    border-radius: 5px;
+}
+
+.current-day {
+    /* Hervorhebung des aktuellen Tages mit rotem Hintergrund, weißem Text, Padding, abgerundeten Ecken und fetter Schrift */
+    background-color: red;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.othermonth {
+    /* Tage außerhalb des aktuellen Monats mit hellem Hintergrund und grauer Schrift */
+    background: #f8f9fa;
+    color: #aaa;
+}
+
+/* ========================== */
+/* 📌 Kalender-Events */
+/* ========================== */
+.tasks {
+    /* Abstand oberhalb der Eventliste */
+    margin-top: 5px;
+}
+
+.task {
+    /* Styling für einzelne Aufgaben/Events im Kalender: Hintergrund, Textfarbe, Padding, Margin, abgerundete Ecken und Schriftgröße */
+    background-color: #4caf50;
+    color: white;
+    padding: 5px;
+    margin: 5px 0;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.task:hover {
+    /* Hover-Effekt für Events */
+    background-color: #388e3c;
+}
+
+.edit-task {
+    /* Button zum Bearbeiten eines Events mit spezifischem Styling, Übergangseffekten und fester Breite */
+    background-color: #333333; /* Bootstrap Warning-Gelb */
+    color: #dbdbdb; /* Dunkle Schrift für bessere Lesbarkeit */
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
+    width: 100%;
+}
+
+.edit-task:hover {
+    /* Hover-Effekt für den Bearbeiten-Button */
+    background-color: #e0a800; /* Etwas dunkleres Gelb beim Hover */
+    color: #fff;
+}
+
+.edit-task i {
+    /* Abstand für Icons im Bearbeiten-Button */
+    margin-right: 5px;
+}
+
+.delete-task {
+    /* Button zum Löschen eines Events mit rotem Hintergrund, spezifischem Padding, Schriftgröße, Übergangseffekten und fester Breite */
+    background-color: #dc3545; /* Bootstrap Danger-Rot */
+    color: rgb(2, 2, 2);
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
+    width: 100%;
+}
+
+.delete-task:hover {
+    /* Hover-Effekt für den Löschen-Button */
+    background-color: #c82333; /* Dunkleres Rot beim Hover */
+    color: #fff;
+}
+
+.delete-task i {
+    /* Abstand für Icons im Löschen-Button */
+    margin-right: 5px;
+}
+
+.task-title {
+    /* Titel des Events: Schriftgröße, Fett, Farbe, Padding und linksbündige Ausrichtung */
+    font-size: 16px;
+    font-weight: bold;
+    color: #212529; /* Dunkler Text */
+    padding: 4px;
+    text-align: left;
+}
+
+.task-time {
+    /* Wiederholung der Zeitangabe mit angepasster Schriftgröße und Ausrichtung */
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    color: #212529; /* Dunkler Text */
+    padding: 4px;
+    text-align: left;
+}
+
+/* ========================== */
+/* 📌 Event-Formular Styling */
+/* ========================== */
+.event-form {
+    /* Styling für das Event-Formular: Weißer Hintergrund, Padding, abgerundete Ecken, Schatten, maximale Breite, zentrierte Darstellung und Spaltenlayout */
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.event-form label {
+    /* Beschriftungen im Event-Formular: Fett, mit oberem Margin und linksbündiger Ausrichtung */
+    font-weight: bold;
+    margin-top: 10px;
+    align-self: flex-start;
+}
+
+.event-form input,
+.event-form textarea {
+    /* Eingabefelder im Event-Formular: Padding, Schriftgröße, Rahmen, abgerundete Ecken, Margin und volle Breite */
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.event-form button {
+    /* Button im Event-Formular: Hintergrund, Textfarbe, Padding, ohne Rahmen, abgerundete Ecken, Cursor und oberer Margin */
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.event-form button:hover {
+    /* Hover-Effekt für den Button im Event-Formular */
+    background: #0056b3;
+}
+
+.cancel-button {
+    /* Link für Abbrechen-Buttons: Inline-Block, oberer Margin, Zentrierung, Textfarbe und ohne Unterstreichung */
+    display: inline-block;
+    margin-top: 10px;
+    text-align: center;
+    color: #333;
+    text-decoration: none;
+}
+
+.cancel-button:hover {
+    /* Hover-Effekt für den Abbrechen-Link */
+    text-decoration: underline;
+}
+
+/* ========================== */
+/* 📌 Responsive Design */
+/* ========================== */
+@media (max-width: 768px) {
+    /* Bei kleineren Bildschirmen wird das Kalender-Grid in 3 Spalten aufgeteilt */
+    .calendar-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    /* Bei sehr kleinen Bildschirmen wird das Kalender-Grid in 1 Spalte dargestellt */
+    .calendar-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+/* 🔵 Mehrtägige Events */
+.multi-day {
+    /* Styling für Events, die über mehrere Tage gehen: Positionierung, Breite, linke Rahmenlinie, Hintergrund, Padding, Margin und abgerundete Ecken */
+    position: relative;
+    width: 100%;
+    border-left: 4px solid #007bff;
+    background: rgba(0, 123, 255, 0.2);
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 3px;
+}
+
+/* 🔵 Start eines mehrtägigen Events */
+.multi-day:first-child {
+    /* Abgerundete linke Ecken beim ersten Tag eines mehrtägigen Events */
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+/* 🔵 Letzter Tag eines mehrtägigen Events */
+.multi-day:last-child {
+    /* Abgerundete rechte Ecken beim letzten Tag eines mehrtägigen Events */
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.month-year-display {
+    /* Darstellung des Monats und Jahres: Größere, fette Schrift, zentriert, in Großbuchstaben, mit Buchstabenabstand, heller Text, Padding, dezenter Hintergrund, abgerundete Ecken und Schatten */
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #f8f9fa;
+    padding: 8px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{# Erbt vom Basis-Template "base.html", welches das grundlegende Layout definiert #}
+
+{% block title %}Profil bearbeiten{% endblock %}
+{# Überschreibt den "title"-Block und setzt den Seitentitel auf "Profil bearbeiten" #}
+
+{% block content %}
+<div class="container">
+    {# Container für den Seiteninhalt #}
+    <h2 class="text-center my-4">✏️ Profil bearbeiten</h2>
+    {# Überschrift der Seite, zentriert und mit vertikalem Margin #}
+
+    {# Formular zum Bearbeiten des Profils; nutzt Flask-WTF Formularobjekt "form" #}
+    <form method="POST" class="needs-validation {{ 'was-validated' if form.errors }}" novalidate>
+        {# CSRF-Token und versteckte Felder einbinden #}
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {# Ausgabe des Labels und Eingabefeldes für den Benutzernamen #}
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control") }}
+            {# Anzeige der Validierungsfehler für das Feld "username" #}
+            {% for error in form.username.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {# Ausgabe des Labels und Eingabefeldes für die E-Mail-Adresse #}
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control") }}
+            {% for error in form.email.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {# Ausgabe des Labels und Eingabefeldes für die Telefonnummer #}
+            {{ form.phone.label(class="form-label") }}
+            {{ form.phone(class="form-control") }}
+            {% for error in form.phone.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {# Ausgabe des Labels und Eingabefeldes für den Firmennamen #}
+            {{ form.company.label(class="form-label") }}
+            {{ form.company(class="form-control") }}
+            {% for error in form.company.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {# Ausgabe des Labels und Eingabefeldes für den Beruf #}
+            {{ form.job.label(class="form-label") }}
+            {{ form.job(class="form-control") }}
+            {% for error in form.job.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {# Ausgabe des Labels und Eingabefeldes für das neue Passwort (optional) #}
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control", placeholder="Neues Passwort (optional)") }}
+        </div>
+
+        <div class="mb-3">
+            {# Ausgabe des Labels und Eingabefeldes zum Wiederholen des neuen Passworts #}
+            {{ form.password2.label(class="form-label") }}
+            {{ form.password2(class="form-control", placeholder="Passwort wiederholen") }}
+        </div>
+
+        {# Submit-Button zum Speichern der Änderungen #}
+        <button type="submit" class="btn btn-success w-100">Speichern</button>
+        {# Button zum Abbrechen und Zurückkehren zur Kalenderansicht #}
+        <a href="{{ url_for('calendar.calendar_view') }}" class="btn btn-outline-secondary w-100 mt-2">Abbrechen</a>
+    </form>
+
+    {# Formular für das Löschen des Kontos, mit Bestätigungsabfrage #}
+    <form action="{{ url_for('auth.delete_account') }}" method="POST"
+          onsubmit="return confirm('Möchtest du dein Konto wirklich löschen? Dies kann nicht rückgängig gemacht werden!');">
+        <button type="submit" class="btn btn-danger w-100 mt-3">Konto löschen</button>
+    </form>
+</div>
+{% endblock %}

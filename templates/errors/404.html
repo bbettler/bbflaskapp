@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{# Erbt vom Basis-Template "base.html", das das Grundlayout der Seite definiert #}
+
+{% block title %}Seite nicht gefunden{% endblock %}
+{# Überschreibt den "title"-Block, um den Seitentitel auf "Seite nicht gefunden" zu setzen #}
+
+{% block content %}
+<div class="container text-center">
+    {# Container, der den Seiteninhalt beinhaltet und den Text zentriert #}
+    <h1 class="text-danger">404</h1>
+    {# Große Überschrift in roter Schrift, die den Fehlercode 404 anzeigt #}
+    <p>Die angeforderte Seite wurde nicht gefunden.</p>
+    {# Kurze Erklärung, dass die gesuchte Seite nicht existiert #}
+    <a href="{{ url_for('calendar.calendar_view') }}" class="btn btn-primary">Zurück zur Startseite</a>
+    {# Button, der den Benutzer zurück zur Startseite (Kalenderansicht) führt #}
+</div>
+{% endblock %}

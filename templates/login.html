@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{# Erbt vom Basis-Template "base.html", welches das Grundlayout der Seite definiert #}
+
+{% block title %}Login{% endblock %}
+{# Überschreibt den "title"-Block und setzt den Seitentitel auf "Login" #}
+
+{% block content %}
+<div class="container">
+    {# Hauptcontainer für den Seiteninhalt #}
+    <div class="row justify-content-center">
+        {# Zeile mit zentrierter Ausrichtung #}
+        <div class="col-md-6">
+            {# Spalte, die mittig auf mittleren bis großen Bildschirmen 6 von 12 Spalten einnimmt #}
+            <h2 class="text-center my-4">🔑 Login</h2>
+            {# Seitenüberschrift, zentriert und mit vertikalem Margin #}
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} text-center">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {# Zeigt Flash-Messages an, falls vorhanden; diese können Erfolgsmeldungen oder Fehlermeldungen enthalten #}
+
+            <div class="card shadow-sm">
+                {# Bootstrap Card mit kleinem Schatten zur optischen Abhebung #}
+                <div class="card-body">
+                    <form class="{{ 'was-validated' if (form.errors | length) > 0 }}" method="POST" novalidate>
+                        {# Formular, das per POST Daten sendet; "novalidate" deaktiviert den Browser-eigenen Validierungsmechanismus,
+                             "was-validated" wird hinzugefügt, falls Validierungsfehler vorliegen #}
+                        {{ form.hidden_tag() }}
+                        {# Einfügen versteckter Felder, z.B. CSRF-Token #}
+
+                        <!-- Benutzername -->
+                        <div class="mb-3">
+                            {# Container für das Feld "Benutzername oder E-Mail" mit unterem Margin #}
+                            {{ form.username_or_email.label(class="form-label") }}
+                            {# Label des Feldes mit der CSS-Klasse "form-label" #}
+                            {{ form.username_or_email(class="form-control", placeholder="Benutzername oder E-Mail") }}
+                            {# Eingabefeld mit der CSS-Klasse "form-control" und Platzhaltertext #}
+                            {% for error in form.username_or_email.errors %}
+                                <small class="text-danger">{{ error }}</small>
+                            {% endfor %}
+                            {# Zeigt Validierungsfehler für das Feld "username_or_email" an #}
+                        </div>
+
+                        <!-- Passwort -->
+                        <div class="mb-3">
+                            {# Container für das Passwortfeld mit unterem Margin #}
+                            {{ form.password.label(class="form-label") }}
+                            {# Label für das Passwortfeld #}
+                            {{ form.password(class="form-control", placeholder="Passwort") }}
+                            {# Passwort-Eingabefeld mit CSS-Klasse "form-control" und Platzhalter #}
+                            {% for error in form.password.errors %}
+                                <small class="text-danger">{{ error }}</small>
+                            {% endfor %}
+                            {# Zeigt Validierungsfehler für das Passwortfeld an #}
+                        </div>
+
+                        <!-- Remember Me -->
+                        <div class="form-check mb-3">
+                            {# Container für das "Remember Me"-Feld als Checkbox, mit unterem Margin #}
+                            {{ form.remember_me(class="form-check-input") }}
+                            {# Checkbox für "Remember Me" mit CSS-Klasse "form-check-input" #}
+                            {{ form.remember_me.label(class="form-check-label ms-2") }}
+                            {# Label für die Checkbox mit einem kleinen linken Margin (ms-2) #}
+                        </div>
+
+                        <!-- Login Button -->
+                        <div class="d-grid">
+                            {# Container, der den Button in voller Breite darstellt #}
+                            {{ form.submit(class="btn btn-primary btn-lg") }}
+                            {# Submit-Button des Formulars mit CSS-Klassen für Bootstrap-Button in großer Größe #}
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                {# Container für den Link zur Registrierung, zentriert und mit oberem Margin #}
+                <p>Neuer Benutzer? <a href="{{ url_for('auth.register') }}">Registrieren!</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

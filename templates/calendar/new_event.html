@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{# Erbt vom Basis-Template "base.html" #}
+
+{% block title %}Neues Event{% endblock %}
+{# Überschreibt den "title"-Block für den Browser-Tab #}
+
+{% block content %}
+<div class="container">
+    {# Container für den Seiteninhalt #}
+    <h2 class="text-center my-4">📅 Neues Event erstellen</h2>
+    {# Überschrift der Seite, zentriert und mit vertikalem Margin #}
+
+    <!-- ✅ Flash-Messages anzeigen -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <div class="alert alert-success">
+                {% for category, message in messages %}
+                    <p class="mb-0">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    {# Zeigt Flash-Messages (Erfolgsmeldungen) an, falls vorhanden #}
+
+    <!-- ✅ Event-Erstellungsformular -->
+    <form method="POST" class="bg-light p-4 rounded shadow-sm">
+        {# Formular zum Erstellen eines neuen Events; sendet Daten per POST; Styling: heller Hintergrund, Padding, abgerundete Ecken und Schatten #}
+        <div class="mb-3">
+            {# Container für das Titel-Feld mit unterem Margin #}
+            <label class="form-label" for="title">Titel:</label>
+            <input type="text" class="form-control" name="title" required>
+            {# Eingabefeld für den Titel des Events #}
+        </div>
+
+        <div class="mb-3">
+            {# Container für das Beschreibungsfeld #}
+            <label class="form-label" for="description">Beschreibung:</label>
+            <textarea class="form-control" name="description"></textarea>
+            {# Textbereich für die Eventbeschreibung #}
+        </div>
+
+        <div class="row">
+            {# Zeigt zwei Spalten für Start- und Endzeit an #}
+            <div class="col-md-6 mb-3">
+                <label class="form-label" for="start_time">Startzeit:</label>
+                <input type="datetime-local" class="form-control" name="start_time" value="{{ default_date }}" required>
+                {# Eingabefeld für die Startzeit im datetime-local Format, vorbefüllt mit einem Standarddatum #}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label" for="end_time">Endzeit:</label>
+                <input type="datetime-local" class="form-control" name="end_time" required>
+                {# Eingabefeld für die Endzeit im datetime-local Format #}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            {# Container für die Teilnehmerauswahl #}
+            <label class="form-label">Teilnehmer hinzufügen:</label>
+            <div class="border p-2 rounded" style="max-height: 200px; overflow-y: auto;">
+                {# Container mit Rahmen, Padding, abgerundeten Ecken und Scrollfunktion bei vielen Teilnehmern #}
+                {% for user in users %}
+                    {# Iteriert über alle Nutzer, um Checkboxen anzuzeigen #}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="participants" value="{{ user.id }}">
+                        <label class="form-check-label">
+                            {{ user.username }} ({{ user.email }})
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            {# Container für die Schaltflächen, die nebeneinander dargestellt werden #}
+            <button type="submit" class="btn btn-primary w-50">Speichern</button>
+            {# Button zum Speichern des neuen Events, nimmt 50% der Breite ein #}
+            <a href="{{ url_for('calendar.calendar_view') }}" class="btn btn-secondary w-50">Abbrechen</a>
+            {# Button zum Abbrechen und Zurückkehren zur Kalenderansicht, ebenfalls 50% Breite #}
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{# Erbt vom Basis-Template "base.html", welches das Grundlayout und gemeinsame Elemente definiert #}
+
+{% block title %}Erfolgreich eingeloggt{% endblock %}
+{# Überschreibt den "title"-Block und setzt den Seitentitel auf "Erfolgreich eingeloggt" #}
+
+{% block content %}
+<div class="container text-center">
+    {# Hauptcontainer, der den Inhalt zentriert darstellt #}
+
+    <!-- Flash-Messages anzeigen -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {# Falls Flash-Messages vorhanden sind, wird eine Erfolgsmeldung angezeigt #}
+            <div class="alert alert-success">
+                <h2 class="my-4 text-success">✅ Erfolgreich eingeloggt!</h2>
+            </div>
+
+            <!-- ✅ JavaScript: Verzögerung vor Weiterleitung -->
+            <script>
+                setTimeout(function() {
+                    window.location.href = "{{ session.get('redirect_to', url_for('calendar.calendar_view')) }}";
+                }, 2000);  // ✅ 2 Sekunden Pause
+            </script>
+        {% endif %}
+    {% endwith %}
+    <p class="mt-3">Du wirst automatisch weitergeleitet...</p>
+    {# Hinweis für den Benutzer, dass er automatisch weitergeleitet wird #}
+</div>
+{% endblock %}

@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{# Erbt von der Basistemplate 'base.html' #}
+
+{% block title %}Kalender{% endblock %}
+{# Definiert den Inhalt des "title"-Blocks, der im Browser-Tab angezeigt wird #}
+
+{% block content %}
+<div class="container text-center">
+    {# Hauptcontainer mit zentriertem Text #}
+    <h1 class="my-4 d-flex align-items-center justify-content-center">
+        {# Überschrift mit Logo und Titel #}
+        <img src="{{ url_for('static', filename='images/calendar_logo.webp') }}" alt="Kalender Logo" height="60" class="me-2 rounded">
+        Kalender
+    </h1>
+    {# Statusbar für Ladeinformationen, standardmäßig versteckt (Klasse "d-none") #}
+    <div id="statusbar" class="alert alert-info d-none text-center">Lade Daten...</div>
+
+    {# Header mit Navigation für den Kalender #}
+    <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3 rounded mb-3">
+        {# Button zum Wechseln in den Vormonat #}
+        <button class="btn btn-light" onclick="window.location.href='{{ previous_month_link }}'">
+            ◀️ Vorheriger Monat
+        </button>
+        {# Anzeige des aktuellen Monats und Jahres in der Mitte #}
+        <div class="d-flex align-items-center flex-grow-1 justify-content-center">
+            <h3 class="month-year-display">{{ month_name }} {{ year }}</h3>
+        </div>
+        {# Button zum Wechseln in den Folgemonat #}
+        <button class="btn btn-light" onclick="window.location.href='{{ next_month_link }}'">
+            Nächster Monat ▶️
+        </button>
+    </div>
+
+    {# Bedingte Anzeige: Falls der angezeigte Monat nicht dem aktuellen entspricht, werden zusätzliche Buttons angezeigt #}
+    {% if month != current_month or year != current_year %}
+        <div class="text-center my-3">
+            {# Button zum Erstellen eines neuen Termins #}
+            <button class="btn btn-primary" onclick="window.location.href='{{ url_for('calendar.new_event') }}'">
+                Neuen Termin erfassen
+            </button>
+            {# Link zurück zur Kalenderansicht des aktuellen Monats #}
+            <a href="{{ url_for('calendar.calendar_view') }}" class="btn btn-secondary">🔄 Zurück zu diesem Monat</a>
+        </div>
+    {% endif %}
+
+    {# Ausgabe von Flash Messages (Erfolgsmeldungen, Fehlermeldungen) #}
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} text-center">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {# Anzeige einer Erfolgsmeldung nach einem erfolgreichen Login #}
+    {% if login_success %}
+        <div class="alert alert-success text-center">
+            Login erfolgreich!
+        </div>
+    {% endif %}
+
+    {# Kalender-Grid: Darstellung der Wochentage und Tage des Monats #}
+    <div class="calendar-grid mt-3">
+        {# Überschriften für die Wochentage #}
+        {% for weekday_header in weekdays_headers %}
+            <div class="weekday-header">{{ weekday_header }}</div>
+        {% endfor %}
+
+        {# Iteration über alle Tage des Monats #}
+        {% for day in month_days %}
+            <div class="day {% if day.month != month %} othermonth {% endif %}" 
+                data-year="{{ day.year }}" 
+                data-month="{{ day.month }}" 
+                data-day="{{ day.day }}"
+                onclick="handleDayClick(event, this)">
+                {# Anzeige der Tageszahl, mit spezieller Hervorhebung, falls es sich um den aktuellen Tag handelt #}
+                <span class="daynumber {% if day.day == current_day and day.month == current_month and day.year == current_year %}current-day{% endif %}">
+                    {{ day.day }}
+                </span>
+
+                {# Container für die Events, die an diesem Tag stattfinden #}
+                <div class="tasks">
+                    {% if tasks.get(day.month) and tasks[day.month].get(day.day) %}
+                        {# Iteriere über die an diesem Tag vorhandenen Events, sortiert nach Startzeit #}
+                        {% for task in tasks[day.month][day.day]|sort(attribute="start_time") %}
+                            <div class="task {% if task.start_time.date() < task.end_time.date() %} multi-day {% endif %}" 
+                                style="--task-color: {{ task.color or '#007bff' }}" onclick="toggleTaskDetails(this)">
+                                {# Anzeige der Startzeit und des Titels des Events #}
+                                <span class="task-time">{{ task.start_time.strftime('%H:%M') }}</span>
+                                <span class="task-title">{{ task.title }}</span>
+                        
+                                {# Versteckte Details des Events, die beim Klicken angezeigt werden #}
+                                <div class="task-details d-none">
+                                    <p class="task-desc">{{ task.description }}</p>
+                                    <p class="task-creator text-muted">
+                                        Erstellt von: {{ task.creator.username }}
+                                    </p>                                    
+                                    {# Button zum Bearbeiten des Events #}
+                                    <a href="{{ url_for('calendar.edit_event', event_id=task.id) }}" class="edit-task">
+                                        Bearbeiten
+                                    </a>
+                        
+                                    {# Button zum Löschen des Events #}
+                                    <a href="#" data-id="{{ task.id }}" class="delete-task">
+                                        Löschen
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Automatisches Ausblenden der Flash-Messages nach 3 Sekunden
+        document.querySelectorAll(".alert").forEach(alert => {
+            setTimeout(() => {
+                alert.style.transition = "opacity 0.5s ease";
+                alert.style.opacity = "0";
+                setTimeout(() => alert.remove(), 500);
+            }, 3000);
+        });
+
+        // Verberge die Lade-Statusbar, sobald der Inhalt geladen ist
+        let statusbar = document.getElementById("statusbar");
+        if (statusbar) statusbar.style.display = "none";
+
+        // Füge Event-Listener zum Löschen von Events hinzu
+        document.querySelectorAll(".delete-task").forEach(button => {
+            button.addEventListener("click", function (event) {
+                event.preventDefault();
+                let eventId = this.getAttribute("data-id");
+                deleteTask(eventId);
+            });
+        });
+    });
+
+    // Funktion zum Löschen eines Events mittels Fetch-API
+    function deleteTask(eventId) {
+        if (confirm("Möchtest du dieses Event wirklich löschen?")) {
+            fetch(`/calendar/delete/${eventId}`, {
+                method: "DELETE",
+                credentials: "include"
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    location.reload();
+                } else {
+                    alert("Löschen fehlgeschlagen!");
+                }
+            })
+            .catch(error => {
+                console.error("Fehler beim Löschen:", error);
+                alert("Ein Fehler ist aufgetreten.");
+            });
+        }
+    }
+
+    // Funktion zum Umschalten der Anzeige der Event-Details
+    function toggleTaskDetails(taskElement) {
+        // Klappe alle anderen Events ein
+        document.querySelectorAll('.task').forEach(task => {
+            if (task !== taskElement) {
+                task.classList.remove('active');
+                task.querySelector('.task-details').classList.add('d-none');
+            }
+        });
+
+        // Schalte die Details des angeklickten Events um
+        taskElement.classList.toggle('active');
+        let details = taskElement.querySelector('.task-details');
+        if (details.classList.contains('d-none')) {
+            details.classList.remove('d-none');
+        } else {
+            details.classList.add('d-none');
+        }
+    }
+
+    // Funktion zum Weiterleiten zur "Neuen Event"-Seite mit dem ausgewählten Datum
+    function redirectToNewEvent(element) {
+        let year = element.getAttribute("data-year");
+        let month = element.getAttribute("data-month");
+        let day = element.getAttribute("data-day");
+
+        window.location.href = `/calendar/new?year=${year}&month=${month}&day=${day}`;
+    }
+
+    // Funktion, die beim Klick auf einen Tag im Kalender aufgerufen wird
+    function handleDayClick(event, dayElement) {
+        // Verhindere, dass beim Klick auf ein bereits vorhandenes Event ein neues Event erstellt wird
+        if (event.target.closest('.task')) {
+            return; // Verhindert die Weiterleitung zu 'new_event'
+        }
+
+        // Ermittle das Datum des angeklickten Tages und leite zur "Neues Event"-Seite weiter
+        let year = dayElement.getAttribute("data-year");
+        let month = dayElement.getAttribute("data-month");
+        let day = dayElement.getAttribute("data-day");
+
+        window.location.href = `/calendar/new?year=${year}&month=${month}&day=${day}`;
+    }
+
+</script>
+{% endblock %}

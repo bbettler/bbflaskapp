@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{# Erbt vom Basis-Template "base.html", das das grundlegende Layout und die gemeinsamen Elemente definiert #}
+
+{% block title %}Startseite{% endblock %}
+{# Überschreibt den "title"-Block und setzt den Seitentitel auf "Startseite" #}
+
+{% block content %}
+<div class="container text-center">
+    {# Hauptcontainer mit zentriertem Text #}
+    <h1 class="my-4">Willkommen in der BB-Flask-App</h1>
+    {# Überschrift der Seite mit vertikalem Margin #}
+
+    {% if current_user.is_authenticated %}
+        {# Überprüft, ob der Benutzer eingeloggt ist #}
+        <div class="alert alert-success" role="alert">
+            {# Erfolgsmeldung für eingeloggte Benutzer #}
+            <h4 class="alert-heading">Hallo, {{ current_user.username }}!</h4>
+            {# Begrüßung mit dem Benutzernamen #}
+            <p>Willkommen zurück in deiner App.</p>
+        </div>
+
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            {# Container für Navigationselemente mit Abstand zwischen den Buttons #}
+            <a href="{{ url_for('calendar.calendar_view') }}" class="btn btn-primary btn-lg">
+                Kalender öffnen
+            </a>
+        </div>
+    {% else %}
+        {# Falls der Benutzer nicht eingeloggt ist #}
+        <div class="alert alert-warning" role="alert">
+            {# Warnmeldung für nicht authentifizierte Benutzer #}
+            <h4 class="alert-heading">Nicht eingeloggt</h4>
+            <p>Bitte melde dich an oder registriere dich, um fortzufahren.</p>
+        </div>
+
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            {# Container für die Login- und Registrierungsbuttons #}
+            <a href="{{ url_for('auth.login') }}" class="btn btn-success btn-lg">Login</a>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-outline-primary btn-lg">Registrieren</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
